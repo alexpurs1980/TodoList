@@ -62,8 +62,10 @@ public class MainActivity extends AppCompatActivity {
             switch (note.getId()) {
                 case 0:
                     colorResID = android.R.color.holo_green_light;
+                    break;
                 case 1:
                     colorResID = android.R.color.holo_orange_light;
+                    break;
                 case 2:
                     colorResID = android.R.color.holo_red_light;
             }
