@@ -1,10 +1,12 @@
 package com.stepicjava.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,6 +52,25 @@ public class MainActivity extends AppCompatActivity {
                     linearLayoutNotes,
                     false
             );
+
+            // находим текстВью для установки в него текста заметки через метод ФВБИД через вью макета
+            TextView textViewNote = view.findViewById(R.id.textViewNote);
+            textViewNote.setText(note.getText());
+
+            // устанавливаем цвет фона (по умолчанию низкий приоритет)
+            int colorResID = 0;
+            switch (note.getId()) {
+                case 0:
+                    colorResID = android.R.color.holo_green_light;
+                case 1:
+                    colorResID = android.R.color.holo_orange_light;
+                case 2:
+                    colorResID = android.R.color.holo_red_light;
+            }
+            int color = ContextCompat.getColor(this, colorResID);
+            textViewNote.setBackgroundColor(color);
+
+            // добавляем заметку во вью в лэйаут
             linearLayoutNotes.addView(view);
 
         }
