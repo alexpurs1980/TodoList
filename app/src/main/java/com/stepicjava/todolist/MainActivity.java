@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // метод для показа заметок
     private void showNotes(){
+        int colorResID = 0;
         // для каждого элемента вставляем содержимое в макет в цикле for each
         for(Note note: notes){
             // добавляем макет в линеар лэйаут, преобразовывая сначала макет из xml во view
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             textViewNote.setText(note.getText());
 
             // устанавливаем цвет фона (по умолчанию низкий приоритет)
-            int colorResID = 0;
             switch (note.getId()) {
                 case 0:
                     colorResID = android.R.color.holo_green_light;
