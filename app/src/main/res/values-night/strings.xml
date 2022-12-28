@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Todo List</string>
     <string name="input_note_text_hint">Input note text</string>
     <string name="low">Low</string>
     <string name="medium">Medium</string>

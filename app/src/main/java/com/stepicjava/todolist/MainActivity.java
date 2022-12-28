@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
             TextView textViewNote = view.findViewById(R.id.textViewNote);
             textViewNote.setText(note.getText());
 
-            // устанавливаем цвет фона (по умолчанию низкий приоритет)
-            switch (note.getId()) {
+            // устанавливаем цвет фона
+            switch (note.getPriority()) {
                 case 0:
                     colorResID = android.R.color.holo_green_light;
                     break;
