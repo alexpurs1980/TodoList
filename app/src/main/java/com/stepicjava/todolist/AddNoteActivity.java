@@ -2,11 +2,14 @@ package com.stepicjava.todolist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 public class AddNoteActivity extends AppCompatActivity {
 
@@ -15,6 +18,9 @@ public class AddNoteActivity extends AppCompatActivity {
     private RadioButton radioButtonMedium;
     private RadioButton radioButtonHigh;
     private Button buttonSaveNote;
+
+    // получаем образец класса из синглтона
+    private DataBase database = DataBase.getInstance();
 
 
     @Override
@@ -41,9 +47,16 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private void saveNote(){
         String text = editTextNote.getText().toString().trim();
+        int priority = getPriority();
+        // id получаем как размер БД. При добавлении заметки размер увеличится и следующий айди тоже
+        int id = database.getNotes().size();
+        Note note = new Note(id, text, priority);
+        database.add(note);
+        // завершаем работу активити
+        finish();
     }
 
-    private void getPriority(){
+    private int getPriority(){
         int priority;
         if (radioButtonLow.isChecked()) {
             priority = 0;
@@ -52,6 +65,11 @@ public class AddNoteActivity extends AppCompatActivity {
         } else {
             priority = 2;
         }
+        return priority;
+    }
+
+    public static Intent newIntent(Context context){
+        return new Intent(context, AddNoteActivity.class);
     }
 
 

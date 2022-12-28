@@ -3,6 +3,7 @@ package com.stepicjava.todolist;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,24 +19,29 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayoutNotes;
     private FloatingActionButton buttonAddNote;
 
-    // создаем коллекцию для размещения в ней заметок
-    private ArrayList<Note> notes = new ArrayList<>();
+    // получаем образец класса из синглтона
+    private DataBase database = DataBase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        // сделаем временный генератор заметок (случайный)
-        Random random = new Random();
-        for (int i = 0; i < 5; i++) {
-            //создаем экземпляр класса Ноут с генерацией случайного приоритета от 0 до 2 (не вкл. 3)
-            Note note = new Note(i, "Note" + i, random.nextInt(3));
-            notes.add(note);
-        }
 
+        buttonAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = AddNoteActivity.newIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
+    // перенесли показ заметок в метод онРезюм что бы заметки отображались не только
+    // при создании активити, а каждый раз при обновлении (например при возвращении)
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
         showNotes();
-
     }
 
     private void initViews(){
@@ -44,9 +50,11 @@ public class MainActivity extends AppCompatActivity {
     }
     // метод для показа заметок
     private void showNotes(){
+        // очищаем лэйаут каждый раз при обновлении вьюшек
+        linearLayoutNotes.removeAllViews();
         int colorResID = 0;
         // для каждого элемента вставляем содержимое в макет в цикле for each
-        for(Note note: notes){
+        for(Note note: database.getNotes()){
             // добавляем макет в линеар лэйаут, преобразовывая сначала макет из xml во view
             View view = getLayoutInflater().inflate(
                     R.layout.note_item,
