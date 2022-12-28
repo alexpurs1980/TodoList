@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         initViews();
         // сделаем временный генератор заметок (случайный)
         Random random = new Random();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             //создаем экземпляр класса Ноут с генерацией случайного приоритета от 0 до 2 (не вкл. 3)
             Note note = new Note(i, "Note" + i, random.nextInt(3));
             notes.add(note);
