@@ -4,5 +4,5 @@
     <string name="low">Low</string>
     <string name="medium">Medium</string>
     <string name="high">High</string>
-    <string name="add_note_button_caption">Add Note</string>
+    <string name="add_note_button_caption">Save Note</string>
 </resources>
