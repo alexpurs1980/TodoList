@@ -62,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
                     false
             );
 
+            // делаем удаление вью по клику
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //вызываем метод ремув у базы данных по айди заметки
+                    database.remove(note.getId());
+                    showNotes();
+                }
+            });
+
             // находим текстВью для установки в него текста заметки через метод ФВБИД через вью макета
             TextView textViewNote = view.findViewById(R.id.textViewNote);
             textViewNote.setText(note.getText());
