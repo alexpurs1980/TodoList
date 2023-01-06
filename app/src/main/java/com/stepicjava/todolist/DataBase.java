@@ -29,7 +29,7 @@ public class DataBase {
     private DataBase(){
         // сделаем временный генератор заметок (случайный)
         Random random = new Random();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             //создаем экземпляр класса Ноут с генерацией случайного приоритета от 0 до 2 (не вкл. 3)
             Note note = new Note(i, "Note" + i, random.nextInt(3));
             notes.add(note);
