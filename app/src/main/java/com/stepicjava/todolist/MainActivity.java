@@ -34,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
         //создаем адаптер и говорим ресайклеру какой адаптер ему применять
         // и как отображать элементы (через менеджер)
         notesAdapter = new NotesAdapter();
+        //устанвливаем слушатель клика
+        notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
+            @Override
+            public void onNoteClick(Note note) {
+                //переопределяем момент клика
+                database.remove(note.getId());
+                showNotes();
+            }
+        });
         recyclerViewNotes.setAdapter(notesAdapter);
         // программный способ внизу установки параметров отображения. А можно через макет
         // и параметр app:layoutManager

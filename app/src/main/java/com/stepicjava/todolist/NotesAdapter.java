@@ -19,9 +19,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     private ArrayList<Note> notes = new ArrayList<>();
 
+    // добавляем переменную интерфейсного типа с сеттером (для доступа к интерфейсу из активити)
+    private OnNoteClickListener onNoteClickListener;
+
+    public void setOnNoteClickListener(OnNoteClickListener onNoteClickListener) {
+        this.onNoteClickListener = onNoteClickListener;
+    }
+
+
     // добавляем сеттер для изменения параметров объекта снаружи (вставка новой коллекции)
-
-
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
         // если данные изменились - сообщаем адаптеру
@@ -40,7 +46,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return new NotesViewHolder(view);
     }
 
-    // метод для подсказке адаптеру какие параметры вью при прокрутке, цвета и проччее
+    // метод для подсказке адаптеру какие параметры вью при прокрутке, цвета и прочее
     @Override
     public void onBindViewHolder(NotesViewHolder viewHolder, int position) {
         Note note = notes.get(position);
@@ -61,6 +67,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         int color = ContextCompat.getColor(viewHolder.itemView.getContext(), colorResId);
         viewHolder.textViewNote.setBackgroundColor(color);
 
+        // добавляем на корневой элемент (айтемВью) слушатели для дейсвтий над ним
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onNoteClickListener != null) {
+                onNoteClickListener.onNoteClick(note);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -80,4 +96,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             textViewNote = itemView.findViewById(R.id.textViewNote);
         }
     }
+
+    // внутри адаптера объявляем интерфейс для работы с адаптером из активити
+    interface OnNoteClickListener {
+
+        void onNoteClick (Note note);
+    }
+
 }
