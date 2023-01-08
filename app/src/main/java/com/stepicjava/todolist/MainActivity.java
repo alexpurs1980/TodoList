@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
         notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
             @Override
             public void onNoteClick(Note note) {
-                //переопределяем момент клика
-                database.remove(note.getId());
-                showNotes();
+//                //переопределяем момент клика
+//                database.remove(note.getId());
+//                showNotes();
             }
         });
         recyclerViewNotes.setAdapter(notesAdapter);
