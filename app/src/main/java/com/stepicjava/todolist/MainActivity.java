@@ -1,7 +1,9 @@
 package com.stepicjava.todolist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,9 +46,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerViewNotes.setAdapter(notesAdapter);
-        // программный способ внизу установки параметров отображения. А можно через макет
-        // и параметр app:layoutManager
-        //recyclerViewNotes.setLayoutManager(new LinearLayoutManager(this));
+
+        // для реакции на касания (свайп) создаем объект определенного класса
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT
+        ) {
+            @Override
+            public boolean onMove(
+                    @NonNull RecyclerView recyclerView,
+                    @NonNull RecyclerView.ViewHolder viewHolder,
+                    @NonNull RecyclerView.ViewHolder target
+            ) {
+                //метод при перемещении объекта
+                return false;
+            }
+
+            @Override
+            public void onSwiped(
+                    @NonNull RecyclerView.ViewHolder viewHolder,
+                    int direction
+            ) {
+                //метод при свайпе объекта
+                //получаем позицию объекта в РВ по которой был произведен свайп
+                int position = viewHolder.getAdapterPosition();
+                Note note = notesAdapter.getNotes().get(position);
+                database.remove(note.getId());
+                showNotes();
+
+            }
+        });
+        // прикрепляем тачхелпер к необходимому РВ
+        itemTouchHelper.attachToRecyclerView(recyclerViewNotes);
 
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override

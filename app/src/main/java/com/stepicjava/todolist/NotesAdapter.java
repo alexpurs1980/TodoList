@@ -26,6 +26,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         this.onNoteClickListener = onNoteClickListener;
     }
 
+    public ArrayList<Note> getNotes() {
+        return new ArrayList<>(notes);
+    }
 
     // добавляем сеттер для изменения параметров объекта снаружи (вставка новой коллекции)
     public void setNotes(ArrayList<Note> notes) {
