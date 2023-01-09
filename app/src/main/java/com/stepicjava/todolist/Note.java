@@ -1,7 +1,12 @@
 package com.stepicjava.todolist;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity (tableName =  "notes")
 public class Note {
-    // задаем поля класса
+    // задаем поля класса (id - первичный ключ)
+    @PrimaryKey (autoGenerate = true)
     private int id;
     private String text;
     private int priority;
