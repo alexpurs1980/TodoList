@@ -17,7 +17,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     //наследуемся от адаптера и переопределяем методы
     // в самом адаптере надо держать коллекцию отображаемых объектов, с параметрами
 
-    private ArrayList<Note> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     // добавляем переменную интерфейсного типа с сеттером (для доступа к интерфейсу из активити)
     private OnNoteClickListener onNoteClickListener;
@@ -26,12 +26,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         this.onNoteClickListener = onNoteClickListener;
     }
 
-    public ArrayList<Note> getNotes() {
+    public List<Note> getNotes() {
         return new ArrayList<>(notes);
     }
 
     // добавляем сеттер для изменения параметров объекта снаружи (вставка новой коллекции)
-    public void setNotes(ArrayList<Note> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
         // если данные изменились - сообщаем адаптеру
         notifyDataSetChanged();

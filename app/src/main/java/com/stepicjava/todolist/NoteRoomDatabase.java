@@ -19,9 +19,15 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(
                     application,
                     NoteRoomDatabase.class,
-                    DB_NAME).build();
+                    DB_NAME)
+                    .allowMainThreadQueries()
+                    .build();
+            // метод .allowMainThreadQueries() можно разрешать только в целях ТЕСТИРОВАНИЯ!
+            // В боевом режиме БД надо запускать в отдельном потоке!
         }
         return  instance;
     }
+    // пишем абстрактный метод генерации интерфеса
+    public abstract NotesDao notesDao();
 
 }

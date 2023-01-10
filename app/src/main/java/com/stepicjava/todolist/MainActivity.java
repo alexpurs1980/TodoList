@@ -23,15 +23,16 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewNotes;
     private FloatingActionButton buttonAddNote;
     private NotesAdapter notesAdapter;
-
-    // получаем образец класса из синглтона
-    private DataBase database = DataBase.getInstance();
+    //объявляем БД
+    private NoteRoomDatabase noteRoomDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        // создаем экзепляр БД
+        noteRoomDatabase = NoteRoomDatabase.getInstance(getApplication());
 
         //создаем адаптер и говорим ресайклеру какой адаптер ему применять
         // и как отображать элементы (через менеджер)
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 //получаем позицию объекта в РВ по которой был произведен свайп
                 int position = viewHolder.getAdapterPosition();
                 Note note = notesAdapter.getNotes().get(position);
-                database.remove(note.getId());
+                noteRoomDatabase.notesDao().remove(note.getId());
                 showNotes();
 
             }
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     // метод для показа заметок (тут делаем Ресайклер вью!)
     private void showNotes(){
         //включаем ресайклер с адаптером
-        notesAdapter.setNotes(database.getNotes());
+        notesAdapter.setNotes(noteRoomDatabase.notesDao().getNotes());
 
     }
 }
