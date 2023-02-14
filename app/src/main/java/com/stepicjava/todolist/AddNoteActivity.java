@@ -27,6 +27,7 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+
         noteRoomDatabase = NoteRoomDatabase.getInstance(getApplication());
         initViews();
         buttonSaveNote.setOnClickListener(new View.OnClickListener() {
@@ -50,8 +51,8 @@ public class AddNoteActivity extends AppCompatActivity {
         String text = editTextNote.getText().toString().trim();
         int priority = getPriority();
         // id получаем как размер БД. При добавлении заметки размер увеличится и следующий айди тоже
-        int id = 0;
-        Note note = new Note(id, text, priority);
+
+        Note note = new Note(text, priority);
         noteRoomDatabase.notesDao().add(note);
         // завершаем работу активити
         finish();

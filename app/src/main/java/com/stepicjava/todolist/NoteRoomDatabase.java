@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Note.class}, version = 1)
+@Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
     //работаем с единственным экземпляром БД, поэтому применяем паттерн Синглтон
     private static NoteRoomDatabase instance = null;
@@ -27,6 +27,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
         }
         return  instance;
     }
+
     // пишем абстрактный метод генерации интерфеса
     public abstract NotesDao notesDao();
 
