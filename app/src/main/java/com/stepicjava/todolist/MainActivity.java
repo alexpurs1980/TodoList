@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+
         // создаем экзепляр БД
         noteRoomDatabase = NoteRoomDatabase.getInstance(getApplication());
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerViewNotes.setAdapter(notesAdapter);
+        showNotes();
 
         // для реакции на касания (свайп) создаем объект определенного класса
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
