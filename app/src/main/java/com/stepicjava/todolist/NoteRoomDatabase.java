@@ -20,7 +20,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
                     application,
                     NoteRoomDatabase.class,
                     DB_NAME)
-                    .allowMainThreadQueries()
+//                    .allowMainThreadQueries()
                     .build();
             // метод .allowMainThreadQueries() можно разрешать только в целях ТЕСТИРОВАНИЯ!
             // В боевом режиме БД надо запускать в отдельном потоке!

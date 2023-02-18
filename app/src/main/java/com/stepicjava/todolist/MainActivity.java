@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private NotesAdapter notesAdapter;
     //объявляем БД
     private NoteRoomDatabase noteRoomDatabase;
+    // создаем хэндлер, который будет держать ссылки на потоки
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +79,24 @@ public class MainActivity extends AppCompatActivity {
                 //получаем позицию объекта в РВ по которой был произведен свайп
                 int position = viewHolder.getAdapterPosition();
                 Note note = notesAdapter.getNotes().get(position);
-                noteRoomDatabase.notesDao().remove(note.getId());
-                showNotes();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        noteRoomDatabase.notesDao().remove(note.getId());
+                        // передаем в хэндлер сообщение для исполнения в главном потоке
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showNotes();
+                            }
+                        });
+
+                    }
+                });
+                thread.start();
+
+
+
 
             }
         });
@@ -105,7 +126,23 @@ public class MainActivity extends AppCompatActivity {
     // метод для показа заметок (тут делаем Ресайклер вью!)
     private void showNotes(){
         //включаем ресайклер с адаптером
-        notesAdapter.setNotes(noteRoomDatabase.notesDao().getNotes());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // фоновый поток
+                List<Note> notes = noteRoomDatabase.notesDao().getNotes();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // главный поток
+                        notesAdapter.setNotes(notes);
+                    }
+                });
+
+            }
+        });
+        thread.start();
+
 
     }
 }

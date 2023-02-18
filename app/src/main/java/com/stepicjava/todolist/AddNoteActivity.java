@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private RadioButton radioButtonMedium;
     private RadioButton radioButtonHigh;
     private Button buttonSaveNote;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     // получаем образец класса из синглтона
     private NoteRoomDatabase noteRoomDatabase;
@@ -33,7 +36,13 @@ public class AddNoteActivity extends AppCompatActivity {
         buttonSaveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveNote();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        saveNote();
+                    }
+                });
+
             }
         });
     }
@@ -53,9 +62,22 @@ public class AddNoteActivity extends AppCompatActivity {
         // id получаем как размер БД. При добавлении заметки размер увеличится и следующий айди тоже
 
         Note note = new Note(text, priority);
-        noteRoomDatabase.notesDao().add(note);
-        // завершаем работу активити
-        finish();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                noteRoomDatabase.notesDao().add(note);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // завершаем работу активити
+                        finish();
+                    }
+                });
+            }
+        });
+        thread.start();
+
+
     }
 
     private int getPriority(){
