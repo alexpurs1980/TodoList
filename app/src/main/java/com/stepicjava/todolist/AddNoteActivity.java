@@ -36,12 +36,7 @@ public class AddNoteActivity extends AppCompatActivity {
         buttonSaveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        saveNote();
-                    }
-                });
+                saveNote();
 
             }
         });
